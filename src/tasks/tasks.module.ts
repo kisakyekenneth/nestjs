@@ -5,3 +5,8 @@ import { TasksController } from './tasks.controller';
   controllers: [TasksController],
 })
 export class TasksModule {}
+
+// git branch -m develop main
+// git fetch origin
+// git branch -u origin/main main
+// git remote set-head origin -a
