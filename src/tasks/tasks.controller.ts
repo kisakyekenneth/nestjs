@@ -1,9 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
-  //Injecting controller
-  //And having constructor of property taskService of type TaskService
+  //taskService is a parameter of type TasksService. It an object to TasksService
   constructor(private taskService: TasksService) {}
+
+  @Get()
+  getTasks() {
+    return this.taskService.getTasks();
+  }
 }
