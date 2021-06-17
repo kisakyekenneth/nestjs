@@ -11,7 +11,7 @@ export interface Task {
 }
 
 //Using predefined status
-enum TaskStatus {
+export enum TaskStatus {
   //With "enum" we use a comma (,) at the end while in "Interfaces" we use (;)
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
