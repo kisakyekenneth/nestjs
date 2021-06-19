@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 import { Task } from './tasks.model';
 import { TasksService } from './tasks.service';
@@ -15,11 +16,8 @@ export class TasksController {
   }
 
   @Post()
-  createTask(
-    @Body('title') title: string,
-    @Body('description') description: string,
-  ): Task {
-    //Retrieve the post data using the decorator @Body and store results into body variable
-    return this.taskService.createTask(title, description);
+  createTask(@Body() createTaskdto: CreateTaskDto): Task {
+    //Modifying our code to be able to capture data in-form of DTOs passed as parameters in the tables
+    return this.taskService.createTask(createTaskdto);
   }
 }

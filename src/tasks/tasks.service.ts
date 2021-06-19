@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './tasks.model';
 import { v4 as uuid } from 'uuid'; //Importing v4 as uuid meaning we assign v4 to varaible uuid
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -15,7 +16,9 @@ export class TasksService {
 
   //Method to create tasks, it's of type Task (Not an array b'se we want it single).
   //Note "id" will be autoGeneranted and "Status" is predefined into the system
-  createTask(title: string, description: string): Task {
+  createTask(createTaskDto: CreateTaskDto): Task {
+    //Use the destructuring structure of ES6 to get title and description from DTO
+    const { title, description } = createTaskDto;
     const task: Task = {
       //uuid an npm package used to auto-generate unique ids
       id: uuid(),
