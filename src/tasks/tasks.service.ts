@@ -29,6 +29,15 @@ export class TasksService {
     this.tasks.push(task);
     return task; //Return task to controller
   }
+
+  getTaskById(id: string): Task {
+    return this.tasks.find((task) => task.id === id);
+  }
+
+  deleteTask(id: string): void {
+    //Filter tasks and only store the tasks not containing the sent id
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
 }
 //"TaskStatus.OPEN" this makes it easy and possible to access the predefined enum,
 //The enums are key value
