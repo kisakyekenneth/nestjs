@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 
 import { Task } from './tasks.model';
@@ -15,9 +15,20 @@ export class TasksController {
     return this.taskService.getTasks();
   }
 
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Task {
+    //Getting the parameter passed using @param('id') and storing them into an "id" of type string
+    return this.taskService.getTaskById(id);
+  }
+
   @Post()
   createTask(@Body() createTaskdto: CreateTaskDto): Task {
     //Modifying our code to be able to capture data in-form of DTOs passed as parameters in the tables
     return this.taskService.createTask(createTaskdto);
+  }
+
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): void {
+    return this.taskService.deleteTask(id);
   }
 }
