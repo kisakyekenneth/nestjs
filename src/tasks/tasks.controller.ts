@@ -1,7 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+//import { Query } from 'typeorm/driver/Query';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
-import { Task } from './tasks.model';
+import { Task, TaskStatus } from './tasks.model';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -10,9 +21,15 @@ export class TasksController {
   constructor(private taskService: TasksService) {}
 
   @Get()
-  getTasks(): Task[] {
+  getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+    //If we have any filters defined, we call tasksService.getTasksWilFilters
+    //Other Just get all the tasks
     //Since we using model which is of Array type, the required method from service returns an array so this must also return an array.
-    return this.taskService.getTasks();
+    if (Object.keys(filterDto).length) {
+      return this.taskService.getTaskWithFilters(filterDto);
+    } else {
+      return this.taskService.getTasks();
+    }
   }
 
   @Get('/:id')
@@ -31,4 +48,24 @@ export class TasksController {
   deleteTask(@Param('id') id: string): void {
     return this.taskService.deleteTask(id);
   }
+
+  //Since we can have an instance to patch given number of field, like @patch('/:id/description') given the id
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body('status') status: TaskStatus,
+  ): Task {
+    //Patch requires getting "id" from params  which was sent and get "Status" from the Body
+    return this.taskService.updateTaskStatus(id, status);
+  }
+
+  @Patch('/:id/description')
+  updateTaskDescription(
+    @Param('id') id: string,
+    @Body('description') description: string,
+  ): Task {
+    return this.taskService.updateTaskDescription(id, description);
+  }
+
+  //During the Patch we don't use the DTO bse it's not favorable to use when fetch data from param ids and status
 }
